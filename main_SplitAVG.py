@@ -37,6 +37,7 @@ parser.add_argument('--sample_num', default=4, type=int, help="The number of loc
 parser.add_argument('--seed', default=2556, type=int)
 parser.add_argument('--arch', default='res34', choices=model_names, help='model architecture')
 parser.add_argument('--cut', default='conv1', help='The name of cut layer, specified according to the used model')
+parser.add_argument('--privacy_preserving', type=bool, default=False, help='If run privacy preserving SplitAVG, no label sharing')
 
 
 def split_net(nets, server_net):
