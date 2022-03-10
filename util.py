@@ -9,7 +9,8 @@ def splitavg_propagation(arg, running_loss, chosen_net, generators, device, crit
 		labels_list.append(labels.to(device))
 
 	inputs_m = inputs_list
-	label_cat = torch.cat(labels_list, 0)
+	if not arg.privacy_preserving:
+		label_cat = torch.cat(labels_list, 0)
 
 	optimizer_server.zero_grad()
 	for optimizer in optimizers:
@@ -45,7 +46,13 @@ def splitavg_propagation(arg, running_loss, chosen_net, generators, device, crit
 			inputs_server = feature_cat
 
 	# Server net backward propagation
-	loss = criterion(np.squeeze(inputs_server, axis=1), label_cat)
+	if not arg.privacy_preserving:
+		loss = criterion(np.squeeze(inputs_server, axis=1), label_cat)
+	else:
+		loss_from_clients = []
+		for i in range(arg.sample_num):
+			loss_from_clients.append(criterion(inputs_server[i*arg.batch_size:(i+1)*arg.batch_size], labels_list[i]))
+		loss = torch.mean(torch.tensor(loss_from_clients))
 	running_loss += loss.item()
 	loss.backward()
 
