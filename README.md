@@ -6,22 +6,22 @@ This repository includes the official project of SplitAVG, from our paper "Split
 
 Our simulated federated data partitions for bone age regression task can be downloaded at: https://drive.google.com/drive/folders/1O8oJ2KBHUprvRo0ILD93XfiYaW8u0Q9I?usp=sharing
 
-The training data consists of 4 highly hetergeneous splits (clients). The organization structures are:
+The training data consists of 4 hetergeneous splits (clients). The organization structures are:
 
+```
 boneS1.h5
-  -- ['examples']   -- ['0']    -- ['pixels']
-                                -- ['label']
-  
-                    -- ['1']    -- ['pixels']
-                                -- ['label']
-                    
-                    -- ['2']    -- ['pixels']
-                                -- ['label']
-                    
-                    -- ['3']    -- ['pixels']
-                                -- ['label']
-
+  -- ['examples']  -- ['0']   -- ['pixels']
+                              -- ['label']
+                   -- ['1']   -- ['pixels']
+                              -- ['label']    
+                   -- ['2']   -- ['pixels']
+                              -- ['label'] 
+                   -- ['3']   -- ['pixels']
+                              -- ['label']
 
 val.h5
-  -- ['examples']   -- ['0']    -- ['pixels']
-                                -- ['label']
+  -- ['examples']  -- ['0']   -- ['pixels']
+                              -- ['label']
+```
+
+
