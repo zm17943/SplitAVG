@@ -24,6 +24,10 @@ val.h5
                               -- ['label']
 ```
 
+Visualization of the heterogeneity in label distributions:
+
+<img width="360" alt="Screen Shot 2022-07-12 at 2 25 47 PM" src="https://user-images.githubusercontent.com/30038903/178567298-c4f196c3-86b5-4312-a630-cb475c1a4816.png">
+
 
 ## Train
 ```
