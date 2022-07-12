@@ -25,3 +25,11 @@ val.h5
 ```
 
 
+## Train
+```
+python main_SplitAVG.py \
+--batch_size 32 \
+--train_file "./data/boneS1.h5" --val_file "./data/val.h5" --site_num 4 \
+--splitavg_v2 False \
+--seed 2556 \
+```
