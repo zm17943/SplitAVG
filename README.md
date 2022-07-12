@@ -30,6 +30,7 @@ val.h5
 python main_SplitAVG.py \
 --batch_size 32 \
 --train_file "./data/boneS1.h5" --val_file "./data/val.h5" --site_num 4 \
+--arch 'res34' \
 --splitavg_v2 False \
 --seed 2556 \
 ```
