@@ -35,12 +35,12 @@ def splitavg_propagation(arg, running_loss, chosen_net, generators, device, crit
 		chosen_net[client].train()
 
 
-	inputs_server = torch.randn_like(inputs_list[0])       # A dummy input tensor for server net, replaced at cut layer
+	inputs_server = torch.randn_like(inputs_list[0])                             # A dummy input tensor for server net, replaced at cut layer
 	for name0, midlayer0 in server_net._modules.items():
 		if name0 != arg.cut:
 			inputs_server = midlayer0(inputs_server)
 			if(name0 == 'avgpool'):                               
-				inputs_server = torch.flatten(inputs_server, 1)      # Only for ResNet
+				inputs_server = torch.flatten(inputs_server, 1)      # Only for ResNet architecture
 		if name0 == arg.cut:
 			inputs_server = midlayer0(inputs_server)
 			inputs_server = feature_cat
