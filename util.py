@@ -56,11 +56,11 @@ def splitavg_propagation(arg, running_loss, chosen_net, generators, device, crit
 	running_loss += loss.item()
 	loss.backward()
 
-    # Server send the gradients at cut layer back to clients
-	grad_to_send = feature_cat.grad[1*arg.batch_size:(1+1)*arg.batch_size]
+        # Server send the gradients at cut layer back to clients
+	grad_to_send = feature_cat.grad[0*arg.batch_size:(0+1)*arg.batch_size]
 	for i in range(1, arg.sample_num):
 		grad_to_send += feature_cat.grad[i*arg.batch_size:(i+1)*arg.batch_size]
-		grad_to_send /= arg.sample_num
+	grad_to_send /= arg.sample_num
 
 
 	optimizer_server.step()
