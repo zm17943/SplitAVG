@@ -33,8 +33,9 @@ Visualization of the heterogeneity in label distributions:
 ```
 python main_SplitAVG.py \
 --batch_size 32 \
---train_file "./data/boneS1.h5" --val_file "./data/val.h5" --site_num 4 \
+--train_file "./data/boneS1.h5" --val_file "./data/val.h5" --site_num 4 --iter_per_epoch 71 --num_class 1 \
 --arch 'res34' \
 --splitavg_v2 False \
 --seed 2556 \
 ```
+
