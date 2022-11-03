@@ -1,14 +1,15 @@
 import torch
 import numpy as np
+import copy
 
-def splitavg_propagation(arg, running_loss, chosen_net, generators, device, criterion, optimizers, optimizer_server):
+def splitavg_propagation(arg, server_net, chosen_net, generators, device, criterion, optimizers, optimizer_server):
 	inputs_list, labels_list = [], []
 	for generator in generators:
 		inputs, labels = next(generator)
 		inputs_list.append(inputs.to(device))
 		labels_list.append(labels.to(device))
 
-	inputs_m = inputs_list
+	inputs_m = copy.deepcopy(inputs_list)
 	if not arg.splitavg_v2:
 		label_cat = torch.cat(labels_list, 0)
 
@@ -53,10 +54,12 @@ def splitavg_propagation(arg, running_loss, chosen_net, generators, device, crit
 		for i in range(arg.sample_num):
 			loss_from_clients.append(criterion(inputs_server[i*arg.batch_size:(i+1)*arg.batch_size], labels_list[i]))
 		loss = torch.mean(torch.tensor(loss_from_clients))
-	running_loss += loss.item()
+	
 	loss.backward()
+	running_loss = loss.item()
+	
 
-        # Server send the gradients at cut layer back to clients
+    # Server send the gradients at cut layer back to clients
 	grad_to_send = feature_cat.grad[0*arg.batch_size:(0+1)*arg.batch_size]
 	for i in range(1, arg.sample_num):
 		grad_to_send += feature_cat.grad[i*arg.batch_size:(i+1)*arg.batch_size]
@@ -76,7 +79,7 @@ def splitavg_propagation(arg, running_loss, chosen_net, generators, device, crit
 	return running_loss
 
 
-def val(arg, epoch, acc_site, best_acc_site, test_loss_site, nets, server_net, test_set_loader, test_len, device, criterion):
+def val(arg, epoch, acc_site, best_acc_site, nets, server_net, test_set_loader, test_len, device, criterion):
 	acc_site = {}
 	test_loss_site = {}
 	server_net.eval()
@@ -100,25 +103,23 @@ def val(arg, epoch, acc_site, best_acc_site, test_loss_site, nets, server_net, t
 						if (name0 == arg.cut):
 							if_server_net = True
 
-				loss = criterion(data, target) 
+				loss = criterion(np.squeeze(data, axis=1), target) 
 				test_loss += loss.item()
-				predict_idx = data.argmax(1, keepdim=True)
-				for h in range(arg.batch_size):
-					if(predict_idx[h] == target[h]):
-						acc += 1
+				# predict_idx = data.argmax(1, keepdim=True)
+				# for h in range(arg.batch_size):
+				# 	if(predict_idx[h] == target[h]):
+				# 		acc += 1
 
-		acc_site[str(site)] = acc/test_len
+		# acc_site[str(site)] = acc/test_len
 		test_loss_site[str(site)] = test_loss/test_len
 
-		if (acc_site[str(site)] > best_acc_site[str(site)]):
-			best_acc_site[str(site)] = acc_site[str(site)]
-			if (arg.save_best):
-				torch.save(nets[site], './checkpoint/site{}_ckpt_best.pth'.format(site))
-		torch.save(nets[site], './checkpoint/site{}_epoch{}_ckpt.pth'.format(site, epoch))
 
+		# if (acc_site[str(site)] > best_acc_site[str(site)]):
+		# 	best_acc_site[str(site)] = acc_site[str(site)]
+		# 	if (arg.save_best):
+		# 		torch.save(nets[site], './checkpoint/site{}_ckpt_best.pth'.format(site))
+		# torch.save(nets[site], './checkpoint/site{}_epoch{}_ckpt.pth'.format(site, epoch))
 
-
-
-
+	return test_loss_site
 
 
