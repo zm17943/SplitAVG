@@ -1,5 +1,5 @@
 # SplitAVG
-This repository includes the official project of SplitAVG, from our paper "SplitAVG: A heterogeneity-aware federated deep learning method for medical imaging"(https://arxiv.org/pdf/2107.02375.pdf), accepted to IEEE Journal of Biomedical and Health Informatics (JBHI) 2022.
+This repository includes the official project of SplitAVG, from our paper "SplitAVG: A heterogeneity-aware federated deep learning method for medical imaging"(https://ieeexplore.ieee.org/abstract/document/9806163?casa_token=AiCs74_RK4EAAAAA:fw3aflyOBRq3_E9y7rgkec4bCC93UWUEJF-OtjmUgCheQONFhkNhUdNh8ObPMB9_5fkeHKCXOQ), accepted to IEEE Journal of Biomedical and Health Informatics (JBHI) 2022.
 
 
 ## Data preparation
